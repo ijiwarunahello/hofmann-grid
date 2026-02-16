@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hofmann Grid</title>
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <h1 class="header__title">HOFMANN GRID</h1>
+        <div class="header__actions">
+          <button id="btn-help" class="btn btn--icon" aria-label="Help">?</button>
+          <button id="btn-clear" class="btn">CLEAR</button>
+        </div>
+      </header>
+
+      <main class="canvas-area">
+        <div id="svg-container" class="svg-container"></div>
+      </main>
+
+      <footer class="controls">
+        <div class="controls__group">
+          <span class="controls__label">ROWS</span>
+          <button id="btn-rows-dec" class="btn btn--small">-</button>
+          <span id="val-rows" class="controls__value">4</span>
+          <button id="btn-rows-inc" class="btn btn--small">+</button>
+        </div>
+        <div class="controls__group">
+          <span class="controls__label">COLS</span>
+          <button id="btn-cols-dec" class="btn btn--small">-</button>
+          <span id="val-cols" class="controls__value">4</span>
+          <button id="btn-cols-inc" class="btn btn--small">+</button>
+        </div>
+        <div class="controls__group controls__group--slider">
+          <span class="controls__label">RADIUS</span>
+          <input id="slider-radius" type="range" min="5" max="95" value="40" class="slider" />
+        </div>
+        <div class="controls__group controls__group--export">
+          <button id="btn-svg" class="btn btn--export">&rsaquo; SVG</button>
+          <button id="btn-png" class="btn btn--export">&rsaquo; PNG</button>
+        </div>
+      </footer>
+    </div>
+
+    <div id="help-overlay" class="overlay overlay--hidden">
+      <div class="overlay__panel">
+        <div class="overlay__header">
+          <h2 class="overlay__title">HOW TO USE</h2>
+          <button id="btn-help-close" class="btn btn--icon">&times;</button>
+        </div>
+        <ol class="overlay__steps">
+          <li>Click a circle to set it as the <strong>active</strong> node (start point)</li>
+          <li>Click another circle to set it as the <strong>target</strong> node</li>
+          <li>Up to 4 tangent lines appear between the two circles</li>
+          <li>Click a tangent line to add it to the contour</li>
+          <li>The target becomes the new active node &mdash; repeat</li>
+          <li>Return to the starting circle to close the contour</li>
+        </ol>
+        <p class="overlay__hint">Press <kbd>Esc</kbd> to cancel selection &middot; Press <kbd>?</kbd> to toggle help</p>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
