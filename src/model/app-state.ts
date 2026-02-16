@@ -220,4 +220,74 @@ export class AppState {
     if (!this.currentContour || this.currentContour.isEmpty) return false;
     return this.currentContour.firstSegment!.nodoA === nodo;
   }
+
+  generateRandom(canvasSize: number): void {
+    this.clearAll();
+
+    const allNodos = this.nodos.flat();
+    if (allNodos.length < 3) return;
+
+    const maxAttempts = 200;
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      const result = this.tryBuildRandomContour(allNodos, canvasSize);
+      if (result) {
+        this.contours.push(result);
+        this.clearNodoStates();
+        this.markUsedNodos();
+        this.triggerRender();
+        return;
+      }
+    }
+    this.triggerRender();
+  }
+
+  private tryBuildRandomContour(allNodos: Nodo[], canvasSize: number): Contour | null {
+    const contour = new Contour();
+    const pathLength = 3 + Math.floor(Math.random() * (Math.min(allNodos.length, 8) - 2));
+
+    const startNodo = allNodos[Math.floor(Math.random() * allNodos.length)];
+    let currentNodo = startNodo;
+    let requiredFlow: Flow | null = null;
+
+    for (let step = 0; step < pathLength; step++) {
+      const isClosing = step === pathLength - 1;
+      const targetNodo = isClosing ? startNodo : this.pickRandomTarget(currentNodo, allNodos);
+      if (!targetNodo || targetNodo === currentNodo) return null;
+
+      const centerA = this.getNodoCenter(currentNodo, canvasSize);
+      const centerB = this.getNodoCenter(targetNodo, canvasSize);
+      const radius = this.getRadius(canvasSize);
+
+      const rawTangents = computeTangents(centerA, centerB, radius);
+      const filtered = filterTangentsByFlow(rawTangents, requiredFlow);
+      if (filtered.length === 0) return null;
+
+      // For closing step, also check that flowB matches first segment's flowA
+      let candidates = filtered;
+      if (isClosing && contour.firstSegment) {
+        const firstFlow = contour.firstSegment.flowA;
+        candidates = filtered.filter((t) => t.flowB === firstFlow);
+        if (candidates.length === 0) return null;
+      }
+
+      const chosen = candidates[Math.floor(Math.random() * candidates.length)];
+      const tangent = new Tangent(
+        currentNodo, targetNodo,
+        chosen.pA, chosen.pB, chosen.kind, chosen.flowA, chosen.flowB,
+      );
+
+      contour.addSegment(tangent);
+      requiredFlow = chosen.flowB;
+      currentNodo = targetNodo;
+    }
+
+    contour.closed = true;
+    return contour;
+  }
+
+  private pickRandomTarget(current: Nodo, allNodos: Nodo[]): Nodo | null {
+    const others = allNodos.filter((n) => n !== current);
+    if (others.length === 0) return null;
+    return others[Math.floor(Math.random() * others.length)];
+  }
 }

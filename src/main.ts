@@ -34,6 +34,10 @@ setupControls(state, () => {
   render();
 });
 
+document.getElementById('btn-random')!.addEventListener('click', () => {
+  state.generateRandom(renderer.getCanvasSize());
+});
+
 document.getElementById('btn-svg')!.addEventListener('click', () => {
   exportSvg(renderer.svg);
 });
