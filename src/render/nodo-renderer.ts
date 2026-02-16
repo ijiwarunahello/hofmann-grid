@@ -24,7 +24,7 @@ export function renderNodos(
         cx: String(center.x),
         cy: String(center.y),
         r: String(radius),
-        class: `nodo nodo--${nodo.state}`,
+        class: state.showNodos ? `nodo nodo--${nodo.state}` : 'nodo nodo--hidden',
       });
 
       circle.addEventListener('click', (e) => {

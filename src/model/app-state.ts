@@ -8,6 +8,7 @@ export class AppState {
   rows = 4;
   cols = 4;
   radiusRatio = 0.40;
+  showNodos = true;
   phase: AppPhase = 'idle';
 
   nodos: Nodo[][] = [];

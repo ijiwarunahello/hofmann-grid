@@ -149,6 +149,15 @@ html, body {
   font-weight: var(--font-weight-light);
 }
 
+.btn--toggle {
+  font-size: 12px;
+}
+
+.btn--toggle-on {
+  background: var(--color-fg);
+  color: var(--color-bg);
+}
+
 .btn--icon {
   width: 28px;
   height: 28px;
@@ -257,6 +266,10 @@ html, body {
 
 .nodo {
   cursor: pointer;
+}
+
+.nodo--hidden {
+  fill: transparent;
 }
 
 .nodo--idle {

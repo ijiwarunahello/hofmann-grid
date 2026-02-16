@@ -34,6 +34,13 @@ setupControls(state, () => {
   render();
 });
 
+const btnToggleNodos = document.getElementById('btn-toggle-nodos')!;
+btnToggleNodos.addEventListener('click', () => {
+  state.showNodos = !state.showNodos;
+  btnToggleNodos.classList.toggle('btn--toggle-on', state.showNodos);
+  state.triggerRender();
+});
+
 document.getElementById('btn-random')!.addEventListener('click', () => {
   state.generateRandom(renderer.getCanvasSize());
 });
