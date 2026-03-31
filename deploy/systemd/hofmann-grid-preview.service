@@ -1,0 +1,15 @@
+[Unit]
+Description=Hofmann Grid Vite Preview Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/iri/Workspaces/github/hofmann-grid
+Environment=PATH=/home/iri/.nvm/versions/node/v24.11.1/bin:/usr/bin:/bin
+ExecStartPre=/home/iri/.nvm/versions/node/v24.11.1/bin/npm run build
+ExecStart=/home/iri/.nvm/versions/node/v24.11.1/bin/npm run preview:host
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target

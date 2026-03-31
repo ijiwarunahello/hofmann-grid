@@ -13,6 +13,45 @@ npm run dev
 ```
 
 
+## systemd Deployment
+
+`vite dev` ではなく、ビルド済みの `dist/` を `vite preview` で配信する前提。
+
+1. ビルドと待受を確認
+
+```bash
+npm run build
+npm run preview:host
+```
+
+2. ユニットを配置
+
+```bash
+mkdir -p ~/.config/systemd/user
+cp deploy/systemd/hofmann-grid-preview.service ~/.config/systemd/user/
+systemctl --user daemon-reload
+systemctl --user enable --now hofmann-grid-preview
+```
+
+3. 状態確認
+
+```bash
+systemctl --user status hofmann-grid-preview
+journalctl --user -u hofmann-grid-preview -f
+```
+
+4. 更新反映
+
+```bash
+git pull
+systemctl --user restart hofmann-grid-preview
+```
+
+公開先は `http://<host-ip>:5173/` 。
+
+ログインしていない状態でも自動起動させたい場合は、別途 root 権限で `loginctl enable-linger iri` が必要。
+
+
 ## Usage
 
 1. 円をクリックして **active** ノード (始点) に設定
